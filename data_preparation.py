@@ -2,7 +2,7 @@ import pandas as pd
 import seaborn as sns
 import xgboost as xgb
 import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.preprocessing import StandardScaler
 # from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, confusion_matrix
@@ -133,30 +133,46 @@ optimal_weight = healthy_count / failure_count
 print(f"Calculated scale_pos_weight: {optimal_weight:.2f}")
 
 # initialize the xgboost classifier
-xgb_model = xgb.XGBClassifier(
+xgb_base = xgb.XGBClassifier(
     scale_pos_weight=optimal_weight,
-    learning_rate=0.1,
-    max_depth=4,
     n_estimators=100,
     random_state=42,
-    use_label_encoder=False,
     eval_metric='logloss'
 )
 
-# train the model on the original training data
-xgb_model.fit(X_train_scaled, y_train)
+# # train the model on the original training data
+# xgb_model.fit(X_train_scaled, y_train)
+#
+# # predict on the test set
+# y_pred_xgb = xgb_model.predict(X_test_scaled)
+#
+# # classification report
+# print(classification_report(y_test, y_pred_xgb))
 
-# predict on the test set
-y_pred_xgb = xgb_model.predict(X_test_scaled)
+# define the grid of parameters to test
+param_grid = {
+    'max_depth': [3, 4, 5],
+    'learning_rate': [0.01, 0.05, 0.1],
+    'min_child_weight': [1, 3, 5]
+}
 
-# classification report
-print(classification_report(y_test, y_pred_xgb))
+# initialize GridSearchCV targeting F1-Score to balance Precision
+grid_search = GridSearchCV(
+    estimator=xgb_base,
+    param_grid=param_grid,
+    scoring='f1',
+    cv=3,
+    verbose=1,
+    n_jobs=-1
+)
 
-# plot xgboost confusion matrix
-plt.figure(figsize=(6, 4))
-cm_xgb = confusion_matrix(y_test, y_pred_xgb)
-sns.heatmap(cm_xgb, annot=True, fmt='d', cmap='Purples')
-plt.ylabel('Actual Label (0 = Healthy, 1 = Failure)')
-plt.xlabel('Predicted Label')
-plt.title('XGBoost Confusion Matrix')
-plt.show()
+# run on grid search on scaled training data
+grid_search.fit(X_train_scaled, y_train)
+
+# extract the best model configuration
+best_xgb = grid_search.best_estimator_
+print(f"Optimal Parameters Found: {grid_search.best_params_}")
+
+# print the current performance report
+y_pred_grid = best_xgb.predict.predict(X_test_scaled)
+print(classification_report(y_test, y_pred_grid))
