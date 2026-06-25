@@ -1,3 +1,4 @@
+import joblib
 import pandas as pd
 import xgboost as xgb
 from sklearn.model_selection import train_test_split
@@ -54,3 +55,8 @@ y_pred_xgb = xgb_model.predict(X_test_scaled)
 
 # classification report
 print(classification_report(y_test, y_pred_xgb))
+
+# save the trained xgboost model and the standard scaler
+joblib.dump(xgb_model, 'main_model.pkl')
+joblib.dump(scaler, 'scaler.pkl')
+print("Model and Scaler successfully serialized!")
