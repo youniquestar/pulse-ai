@@ -57,6 +57,6 @@ y_pred_xgb = xgb_model.predict(X_test_scaled)
 print(classification_report(y_test, y_pred_xgb))
 
 # save the trained xgboost model and the standard scaler
-joblib.dump(xgb_model, 'main_model.pkl')
-joblib.dump(scaler, 'scaler.pkl')
+joblib.dump(xgb_model, 'data/main_model.pkl')
+joblib.dump(scaler, 'data/scaler.pkl')
 print("Model and Scaler successfully serialized!")

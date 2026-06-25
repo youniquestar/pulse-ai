@@ -7,8 +7,8 @@ import numpy as np
 app = FastAPI(title="Pulse AI: Predictive Maintenance Engine")
 
 # load the serialized model assets
-model = joblib.load('main_model.pkl')
-scaler = joblib.load('scaler.pkl')
+model = joblib.load('data/main_model.pkl')
+scaler = joblib.load('data/scaler.pkl')
 
 # Define the expected JSON input schema using Pydantic
 class SensorInput(BaseModel):
