@@ -206,12 +206,13 @@ vibe-check/
 │
 ├── data # A folder for relevant data and models
     ├── main_model.pkl      # Production-serialized, optimized XGBoost model binary 
-    ├── scaler.pkl           # Serialized StandardScaler preprocessing asset
-    ├── ai4i2020.csv         # Local copy of the industrial manufacturing dataset
-├── main.py              # FastAPI production deployment backend application 
-├── simulator.py         # Live factory floor data-stream simulator client
-├── xgboost_model.py     # The final standardized XGBoost model 
-└── README.md            # Professional technical repository documentation
+    ├── scaler.pkl          # Serialized StandardScaler preprocessing asset
+    ├── ai4i2020.csv        # Local copy of the industrial manufacturing dataset
+├── data_preparation.py     # The optimizations journey  
+├── main.py                 # FastAPI production deployment backend application 
+├── simulator.py            # Live factory floor data-stream simulator client
+├── xgboost_model.py        # The final standardized XGBoost model 
+└── README.md               # Professional technical repository documentation
 ```
 
 ---
