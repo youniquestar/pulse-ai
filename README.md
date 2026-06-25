@@ -37,11 +37,11 @@ Industrial maintenance data features a severe class imbalance (~96% healthy, ~4%
 
 | Iteration | Model Strategy                  | Precision |  Recall  | Key Insights & Architectural Takeaway                                                   |
 |:---------:|:--------------------------------|:---------:|:--------:|:----------------------------------------------------------------------------------------|
-|  **01**   | `Random Forest` (Baseline)      | **0.93**  |   0.79   | Excellent precision but missed 21% of critical failures due to data class bias.         |
-|  **02**   | `Random Forest` (Class Weights) | **0.94**  |   0.71   | Custom weight scaling warped tree impurity math, dropping recall performance.           |
-|  **03**   | `Random Forest` + `SMOTE`       |   0.61    | **0.82** | Synthetic data generation increased recall but introduced high false-alarm paranoia.    |
-|  **04**   | `XGBoost` (`scale_pos_weight`)  |   0.51    | **0.91** | Massive recall surge; however, heavy gradient weighting introduced over-aggressiveness. |
-|  **05**   | **Optimized XGBoost (Final)**   | **0.64**  | **0.82** | Systematic hyperparameter optimization achieved the optimal industry-ready balance.     |
+|  **01**   | `Random Forest` (Baseline)      | **0.93**  | **0.79** | Excellent precision but missed 21% of critical failures due to data class bias.         |
+|  **02**   | `Random Forest` (Class Weights) | **0.94**  | **0.71** | Custom weight scaling warped tree impurity math, dropping recall performance.           |
+|  **03**   | `Random Forest` + `SMOTE`       | **0.61**  | **0.82** | Synthetic data generation increased recall but introduced high false-alarm paranoia.    |
+|  **04**   | `XGBoost` (scale_pos_weight)    | **0.51**  | **0.91** | Massive recall surge; however, heavy gradient weighting introduced over-aggressiveness. |
+|  **05**   | `Optimized XGBoost` (Final)     | **0.64**  | **0.82** | Systematic hyperparameter optimization achieved the optimal industry-ready balance.     |
 
 ### Hyperparameter Fine-Tuning
 Using a 3-fold cross-validated Stratified `GridSearchCV` optimized against the **F1-score**, the final operational model bounds were unlocked:
@@ -209,7 +209,8 @@ vibe-check/
     ├── scaler.pkl           # Serialized StandardScaler preprocessing asset
     ├── ai4i2020.csv         # Local copy of the industrial manufacturing dataset
 ├── main.py              # FastAPI production deployment backend application 
-├── simulator.py         # Live factory floor data-stream simulator client 
+├── simulator.py         # Live factory floor data-stream simulator client
+├── xgboost_model.py     # The final standardized XGBoost model 
 └── README.md            # Professional technical repository documentation
 ```
 
